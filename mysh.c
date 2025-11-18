@@ -685,7 +685,25 @@ int main(int argc, char *argv[]){
             token_count--;
 			
         }
+		
+		//////////////////////////////////////////////////////
+		if(skip_command){
+			
+			free(tokens);
+			continue;
+			
+		}
+
+		if(token_count == 0 || tokens[0] == NULL){
+			
+			free(tokens);
+			continue;
+			
+		}
+		//////////////////////////////////////////////////////
+		
         
+		/*
         if(skip_command || token_count == 0 || tokens[0] == NULL){
 			
             free(tokens);
@@ -693,6 +711,7 @@ int main(int argc, char *argv[]){
 			
         }
         
+		*/
         //Check for pipes:
         int pipe_count = 0;
         int pipe_positions[PATH_MAX];
