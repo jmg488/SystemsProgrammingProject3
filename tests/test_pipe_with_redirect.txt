@@ -1,0 +1,2 @@
+echo hello world | cat > pipe_redirect_output.txt
+exit

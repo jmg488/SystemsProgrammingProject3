@@ -1,0 +1,3 @@
+echo first works
+or echo should not print
+exit

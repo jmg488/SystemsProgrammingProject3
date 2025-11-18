@@ -1,0 +1,2 @@
+cat < test_input.txt > test_input_output.txt
+exit

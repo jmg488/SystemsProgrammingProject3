@@ -1,0 +1,4 @@
+echo first
+and echo second
+and echo third
+exit

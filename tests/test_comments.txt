@@ -1,0 +1,4 @@
+echo visible # this is a comment
+# this entire line is a comment
+echo also visible
+exit

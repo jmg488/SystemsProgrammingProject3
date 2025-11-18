@@ -1,0 +1,4 @@
+
+
+echo after empty
+exit

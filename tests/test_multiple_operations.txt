@@ -1,0 +1,6 @@
+pwd
+cd /tmp
+pwd
+cd -
+echo done
+exit

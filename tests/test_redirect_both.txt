@@ -1,0 +1,2 @@
+cat < test_both_in.txt > test_both_out.txt
+exit

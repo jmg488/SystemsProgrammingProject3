@@ -1,0 +1,3 @@
+echo first command
+and echo second command
+exit

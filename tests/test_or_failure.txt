@@ -1,0 +1,3 @@
+nonexistent_command_abc
+or echo this runs
+exit

@@ -1,0 +1,2 @@
+echo pipe test | cat | cat | cat
+exit

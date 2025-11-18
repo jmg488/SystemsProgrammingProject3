@@ -1,0 +1,2 @@
+echo redirected output > test_output.txt
+exit
