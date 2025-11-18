@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -453,7 +454,7 @@ int execute_pipeline(char*** commands, int num_commands, int interactive, int fr
 			
             if(i > 0){
 				
-                if(dup2(pipes[i - 1][0], STDIN_FILENO) < 0
+                if(dup2(pipes[i - 1][0], STDIN_FILENO) < 0){
 				
                     perror("dup2");
                     exit(1);
@@ -571,7 +572,7 @@ int main(int argc, char *argv[]){
         }
 		
         interactive = 0;
-        from_stdin = 0
+        from_stdin = 0;
 		
     }
 
@@ -823,7 +824,7 @@ int main(int argc, char *argv[]){
                     last_cmd_status = 1;
                     free(command_args);
                     free(tokens);
-                    continue;
+                    goto next_iteration;
 					
                 }
 				
@@ -840,7 +841,7 @@ int main(int argc, char *argv[]){
                     last_cmd_status = 1;
                     free(command_args);
                     free(tokens);
-                    continue;
+                    goto next_iteration;
 					
                 }
 				
@@ -876,6 +877,9 @@ int main(int argc, char *argv[]){
         
         free(command_args);
         free(tokens);
+		
+		next_iteration:
+		continue;
 		
     }
 
