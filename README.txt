@@ -12,14 +12,13 @@ NETID: js4069
 - Jeff will be submitting the .tar archive to Canvas for submission.
 - To build/compile the project, type "make" (without quotations) in bash.
 ===================================================================
-FIRST TIME SETUP (PLEASE READ!!!!!):
+FIRST TIME SETUP:
 ===================================================================
-Step #1 (Only need to do it one time): Create the test and input files: bash create_test_files.sh
+Step #1: Create the test and input files: bash create_test_files.sh
 
-Step#2 (Only need to do it one time): Make the test runner executable: chmod +x run_tests.sh
+Step #2: Make the test runner executable: chmod +x run_tests.sh
 
-Step #3: To only compile mysh and nothing else: make
-Step #3: To compile AND run all of the automated test: make test
+Step #3: Run all of the tests: make test
 
 Step #4: To clean up: make clean
 ===================================================================
@@ -206,6 +205,8 @@ Makefile
 README.txt
 run-tests.sh
 create_test_files.sh
+AUTHOR
+
 tests/*.txt
 ===================================================================
 Cleaning Up:
