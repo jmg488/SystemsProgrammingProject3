@@ -581,7 +581,12 @@ int main(int argc, char *argv[]){
         printf("Welcome to my shell!\n");
 		
     }
-
+	
+	//Buffer to hold data across reads:
+	static char read_buffer[PATH_MAX * 2] = {0};
+	static int buffer_pos = 0;
+	static int buffer_len = 0;
+	
     while (1){
 		
         if(interactive){
@@ -591,27 +596,65 @@ int main(int argc, char *argv[]){
 			
         }
         
-        //Read input from the correct file descriptor:
-        ssize_t bytes_read = read(input_fd, input, sizeof(input) - 1);
-		
-        if(bytes_read <= 0){
-			
-            break;
-			
+		//Everything above here remains the same.
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		//Read more data if buffer is empty or doesn't contain a newline:
+        char* newline_pos = memchr(read_buffer + buffer_pos, '\n', buffer_len - buffer_pos);
+        
+        if(newline_pos == NULL && buffer_len - buffer_pos < PATH_MAX){
+            //Move remaining data to beginning of buffer:
+            if(buffer_pos > 0){
+                memmove(read_buffer, read_buffer + buffer_pos, buffer_len - buffer_pos);
+                buffer_len -= buffer_pos;
+                buffer_pos = 0;
+            }
+            
+            //Read more data:
+            ssize_t bytes_read = read(input_fd, read_buffer + buffer_len, 
+                                       sizeof(read_buffer) - buffer_len - 1);
+            
+            if(bytes_read < 0){
+                perror("read");
+                break;
+            }
+            
+            if(bytes_read == 0){
+                //EOF - process any remaining data:
+                if(buffer_len > buffer_pos){
+                    read_buffer[buffer_len] = '\0';
+                    strcpy(input, read_buffer + buffer_pos);
+                    buffer_pos = buffer_len;
+                } else {
+                    break;
+                }
+            } else {
+                buffer_len += bytes_read;
+                read_buffer[buffer_len] = '\0';
+                newline_pos = memchr(read_buffer + buffer_pos, '\n', buffer_len - buffer_pos);
+            }
         }
         
-		input[bytes_read] = '\0';
+        //Extract one line:
+        if(newline_pos != NULL){
+            int line_len = newline_pos - (read_buffer + buffer_pos);
+            strncpy(input, read_buffer + buffer_pos, line_len);
+            input[line_len] = '\0';
+            buffer_pos += line_len + 1; //Skip past newline
+        } else if(buffer_len > buffer_pos){
+            //No newline but have data (last line without newline):
+            strcpy(input, read_buffer + buffer_pos);
+            buffer_pos = buffer_len;
+        } else {
+            break;
+        }
 
         //Handles empty input:
-        if(bytes_read == 1 && input[0] == '\n'){
-			
+        if(input[0] == '\0' || (strlen(input) == 0)){
             continue;
-			
         }
-        
-        //Remove newline:
-        input[strcspn(input, "\n")] = '\0';
-        
+		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		//Keep tokenize the input comment and everything below it the same.
         //Tokenize the input:
         char** tokens = malloc(PATH_MAX * sizeof(char*));
         int token_count = 0;
