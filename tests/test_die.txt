@@ -1,1 +1,1 @@
-die error message for die command
+die error message
